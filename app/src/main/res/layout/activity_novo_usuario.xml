@@ -50,6 +50,5 @@
         android:id="@+id/spSexo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:entries="Masculino, Feminino" />
+        android:layout_marginTop="8dp"/>
 </LinearLayout>
