@@ -24,6 +24,8 @@ android {
 }
 
 dependencies {
+    def thirtyinchVersion = '0.9.6'
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -40,4 +42,9 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0-beta03'
 
     implementation 'com.github.thunder413:DateTimeUtils:3.0'
+
+    implementation "net.grandcentrix.thirtyinch:thirtyinch-kotlin:$thirtyinchVersion"
+    implementation "net.grandcentrix.thirtyinch:thirtyinch-kotlin-coroutines:$thirtyinchVersion"
+
+    implementation "com.mikepenz:fastadapter:4.1.0"
 }
