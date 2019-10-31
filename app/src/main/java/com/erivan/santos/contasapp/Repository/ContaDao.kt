@@ -1,11 +1,16 @@
 package com.erivan.santos.contasapp.Repository
 
 import com.erivan.santos.contasapp.POJO.Conta
+import com.erivan.santos.contasapp.POJO.Usuario
 import com.github.thunder413.datetimeutils.DateTimeUnits
 import com.github.thunder413.datetimeutils.DateTimeUtils
 import com.j256.ormlite.dao.BaseDaoImpl
+import com.j256.ormlite.dao.GenericRawResults
+import com.j256.ormlite.dao.RawRowMapper
 import org.jetbrains.annotations.NotNull
+import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ContaDao : BaseDaoImpl<Conta, Int>
 {
@@ -23,42 +28,112 @@ class ContaDao : BaseDaoImpl<Conta, Int>
         return delete(conta) > 0
     }
 
-    fun pesquisarPorMes() : List<Conta> {
+    fun pesquisarPorMes(usuario: Usuario) : List<Conta> {
         var hoje = Date()
+        var f = SimpleDateFormat("MM")
 
-        var sql = "SELECT * FROM contas WHERE pago = 0 AND strftime('%m', dataVencimento) = " + "'" + hoje.month + "'";
-        queryRaw(sql)
+        var mes: String = f.format(hoje)
+
+        //Pega as contas do mes atual
+        var sql = "SELECT id, titulo, descricao, valor, parcelas, periodo_dias, dataVencimento, avisarVencimento, pago FROM contas " +
+                "WHERE usuario_id = ${usuario.id} AND "
+                "pago = 0 " +
+                "AND strftime('%m', dataVencimento) = '$mes'";
+
+        var result : GenericRawResults<Conta>  = queryRaw(sql, object : RawRowMapper<Conta> {
+            override fun mapRow(columnNames: Array<out String>?, resultColumns: Array<out String>?): Conta {
+                var conta : Conta = Conta()
+
+                var f: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
+
+                conta.usuario = usuario
+                conta.id = resultColumns!!.get(0).toInt()
+                conta.titulo = resultColumns!!.get(1)
+                conta.descricao = resultColumns!!.get(2)
+                conta.valor = resultColumns!!.get(3).toFloat()
+                conta.parcelas = resultColumns!!.get(4).toInt()
+                conta.periodo_dias = resultColumns!!.get(5).toInt()
+                conta.dataVencimento = f.parse(resultColumns!!.get(6))
+                conta.avisarVencimento = resultColumns!!.get(7).toBoolean()
+                conta.pago = resultColumns!!.get(8).toBoolean()
+
+                return conta
+            }
+        })
+
+        return result.results
     }
 
-    fun pesquisarPorVencidas() : List<Conta> {
+    fun pesquisarPorVencidas(usuario: Usuario) : List<Conta> {
         var dataHoje = Date()
 
-        return queryBuilder().where().eq("pago", false).and().gt("dataVencimento", dataHoje).query()
+        return queryBuilder().where()
+            .eq("usuario_id", usuario.id)
+            .and()
+            .eq("pago", false)
+            .and()
+            .gt("dataVencimento", dataHoje)
+            .query()
     }
 
     //Pesquisam todas q faltam ate 8 dias para vencer ou ja venceram
-    fun pesquisarPorProximasVencer() : List<Conta> {
-        var dataHoje = Date()
+    fun pesquisarPorProximasVencer(usuario: Usuario) : List<Conta> {
+        var hoje = Date()
+        var f = SimpleDateFormat("yyyy-MM-dd HH:mm")
 
-        queryBuilder()
-            .orderBy("dataVencimento", false)
-            .where()
-            .ge("dataVencimento", dataHoje)
-            .and()
-            .
+        var dataFormatada: String = f.format(hoje)
+
+        //Pega as contas do mes atual
+        var sql = "SELECT id, titulo, descricao, valor, parcelas, periodo_dias, dataVencimento, avisarVencimento, pago FROM contas " +
+                "WHERE usuario_id = ${usuario.id} AND "
+                "pago = 0 " +
+                "AND $dataFormatada > datetime(dataVencimento, '-8 days') AND $dataFormatada < dataVencimento";
+
+        var result : GenericRawResults<Conta>  = queryRaw(sql, object : RawRowMapper<Conta> {
+            override fun mapRow(columnNames: Array<out String>?, resultColumns: Array<out String>?): Conta {
+                var conta : Conta = Conta()
+
+                var f = SimpleDateFormat("yyyy-MM-dd HH:mm")
+
+                conta.usuario = usuario
+                conta.id = resultColumns!!.get(0).toInt()
+                conta.titulo = resultColumns!!.get(1)
+                conta.descricao = resultColumns!!.get(2)
+                conta.valor = resultColumns!!.get(3).toFloat()
+                conta.parcelas = resultColumns!!.get(4).toInt()
+                conta.periodo_dias = resultColumns!!.get(5).toInt()
+                conta.dataVencimento = f.parse(resultColumns!!.get(6))
+                conta.avisarVencimento = resultColumns!!.get(7).toBoolean()
+                conta.pago = resultColumns!!.get(8).toBoolean()
+
+                return conta
+            }
+        })
+
+        return result.results
     }
 
     //Pesquisa todas q estao abertas
-    fun pesquisarTodasAberto() : List<Conta> {
-        return queryBuilder().orderBy("pago", false).where().eq("pago", false).query()
+    fun pesquisarTodasAberto(usuario: Usuario) : List<Conta> {
+        return queryBuilder()
+            .orderBy("pago", false)
+            .where()
+            .eq("pago", false)
+            .and()
+            .eq("usuario_id", usuario.id)
+            .query()
     }
 
     //Pesquisa todas ordenadas por data de vencmento
-    fun pesquisarTodas(data : Date) : List<Conta> {
-        return queryBuilder().orderBy("dataVencimento", false).query()
+    fun pesquisarTodas(usuario: Usuario, data : Date) : List<Conta> {
+        return queryBuilder()
+            .orderBy("dataVencimento", false)
+            .where()
+            .eq("usuario_id", usuario.id)
+            .query()
     }
 
     fun pesquisarAvancado(data : Date) : List<Conta> {
-
+        return ArrayList<Conta>()
     }
 }

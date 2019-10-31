@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ContasApp.iml" filepath="$PROJECT_DIR$/ContasApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/ContasApp-app.iml" filepath="$PROJECT_DIR$/app/ContasApp-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Desktop-ContasApp.iml" filepath="$PROJECT_DIR$/Desktop-ContasApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

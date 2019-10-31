@@ -33,6 +33,7 @@ class Conta {
     @DatabaseField(foreign = true)
     var usuario: Usuario? = null
 
+    @DatabaseField
     var pago = false
 
     constructor()
