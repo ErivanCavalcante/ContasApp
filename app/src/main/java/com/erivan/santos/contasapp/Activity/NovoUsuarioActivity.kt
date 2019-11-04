@@ -5,17 +5,20 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import com.erivan.santos.contasapp.POJO.Usuario
 import com.erivan.santos.contasapp.Presenter.UsuarioPresenter
 import com.erivan.santos.contasapp.R
 import com.erivan.santos.contasapp.View.UsuarioView
 import net.grandcentrix.thirtyinch.TiActivity
 import kotlinx.android.synthetic.main.activity_novo_usuario.*
+import org.androidannotations.annotations.AfterViews
+import org.androidannotations.annotations.EActivity
 
-class NovoUsuarioActivity : TiActivity<UsuarioPresenter, UsuarioView>(), UsuarioView {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_novo_usuario)
+@EActivity(R.layout.activity_novo_usuario)
+open class NovoUsuarioActivity : TiActivity<UsuarioPresenter, UsuarioView>(), UsuarioView {
 
+    @AfterViews
+    fun setupViews() {
         var tipos = arrayOf("Masculino", "Feminino")
         var adapter: ArrayAdapter<String> = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, tipos)
 
@@ -42,6 +45,7 @@ class NovoUsuarioActivity : TiActivity<UsuarioPresenter, UsuarioView>(), Usuario
 
 
     override fun onBackPressed() {
+        LoginActivity_.intent(this).start()
         finish()
     }
 
@@ -53,7 +57,7 @@ class NovoUsuarioActivity : TiActivity<UsuarioPresenter, UsuarioView>(), Usuario
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
-            R.id.menu_check -> presenter.adicionar()
+            R.id.menu_check -> presenter.adicionar(Usuario())
             else -> super.onOptionsItemSelected(item)
         }
 

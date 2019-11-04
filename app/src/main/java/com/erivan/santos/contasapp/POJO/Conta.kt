@@ -1,5 +1,7 @@
 package com.erivan.santos.contasapp.POJO
 
+import android.os.Parcel
+import android.os.Parcelable
 import android.view.View
 import android.widget.TextView
 import com.erivan.santos.contasapp.R
@@ -11,7 +13,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @DatabaseTable(tableName = "Contas")
-open class Conta : AbstractItem<Conta.ContaViewHolder> {
+open class Conta : AbstractItem<Conta.ContaViewHolder>, Parcelable {
 
     @DatabaseField(generatedId = true)
     var id: Int = 0
@@ -26,10 +28,10 @@ open class Conta : AbstractItem<Conta.ContaViewHolder> {
     var valor = 0.0f
 
     @DatabaseField(canBeNull = true)
-    var parcelas: Int? = null
+    var parcelas: Int = 1
 
     @DatabaseField(canBeNull = true)
-    var periodo_dias: Int?  = null
+    var periodo_dias: Int  = 0
 
     @DatabaseField
     var dataVencimento: Date = Date()
@@ -38,7 +40,7 @@ open class Conta : AbstractItem<Conta.ContaViewHolder> {
     var avisarVencimento: Boolean = false
 
     @DatabaseField(foreign = true)
-    var usuario: Usuario? = null
+    lateinit var usuario: Usuario
 
     @DatabaseField
     var pago = false
@@ -48,6 +50,17 @@ open class Conta : AbstractItem<Conta.ContaViewHolder> {
 
     override val type: Int
         get() = 0
+
+    constructor(parcel: Parcel) : this() {
+        id = parcel.readInt()
+        titulo = parcel.readString()!!
+        descricao = parcel.readString()!!
+        valor = parcel.readFloat()
+        parcelas = parcel.readInt()
+        periodo_dias = parcel.readInt()
+        avisarVencimento = if (parcel.readInt() == 1) true else false
+        pago = if (parcel.readInt() == 1) true else false
+    }
 
     override fun getViewHolder(v: View): ContaViewHolder {
         return ContaViewHolder(v)
@@ -59,8 +72,8 @@ open class Conta : AbstractItem<Conta.ContaViewHolder> {
         titulo: String,
         descricao: String,
         valor: Float,
-        parcelas: Int?,
-        periodo_dias: Int?,
+        parcelas: Int,
+        periodo_dias: Int,
         dataVencimento: Date,
         avisarVencimento: Boolean,
         usuario: Usuario
@@ -73,6 +86,21 @@ open class Conta : AbstractItem<Conta.ContaViewHolder> {
         this.dataVencimento = dataVencimento
         this.avisarVencimento = avisarVencimento
         this.usuario = usuario
+    }
+
+    override fun writeToParcel(dest: Parcel?, flags: Int) {
+        dest!!.writeInt(id)
+        dest!!.writeString(titulo)
+        dest!!.writeString(descricao)
+        dest!!.writeFloat(valor)
+        dest!!.writeInt(parcelas)
+        dest!!.writeInt(periodo_dias)
+        dest!!.writeInt(if (avisarVencimento) 1 else 0)
+        dest!!.writeInt(if (pago) 1 else 0)
+    }
+
+    override fun describeContents(): Int {
+        return 0
     }
 
     class ContaViewHolder(view: View) : FastAdapter.ViewHolder<Conta>(view) {
@@ -98,5 +126,15 @@ open class Conta : AbstractItem<Conta.ContaViewHolder> {
             txtDataVencimento.text = ""
         }
 
+    }
+
+    companion object CREATOR : Parcelable.Creator<Conta> {
+        override fun createFromParcel(parcel: Parcel): Conta {
+            return Conta(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Conta?> {
+            return arrayOfNulls(size)
+        }
     }
 }

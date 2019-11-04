@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.SQLException;
 
 public class UserDao extends BaseDaoImpl<Usuario, Integer> {
-    protected UserDao() throws SQLException {
+    public UserDao() throws SQLException {
         super(OrmliteHelper.getInstance().getConnectionSource(), Usuario.class);
     }
 

@@ -1,11 +1,12 @@
 package com.erivan.santos.contasapp.POJO
 
+import com.j256.ormlite.dao.ForeignCollection
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.field.ForeignCollectionField
 import com.j256.ormlite.table.DatabaseTable
 
 @DatabaseTable(tableName = "Usuarios")
-class Usuario {
+open class Usuario {
     @DatabaseField(generatedId = true)
     var id: Int = 0
 
@@ -25,7 +26,7 @@ class Usuario {
     var sexo: Int = 0;
 
     @ForeignCollectionField
-    var contas: Collection<Conta>? = null
+    lateinit var contas: ForeignCollection<Conta>
 
     constructor()
 

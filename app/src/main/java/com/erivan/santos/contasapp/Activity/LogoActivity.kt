@@ -5,17 +5,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import com.erivan.santos.contasapp.R
+import org.androidannotations.annotations.AfterViews
+import org.androidannotations.annotations.EActivity
 
-class LogoActivity : AppCompatActivity() {
+@EActivity(R.layout.activity_logo)
+open class LogoActivity : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_logo)
-
+    @AfterViews
+    fun setupViews() {
         var handler = Handler()
+
         handler.postDelayed({
-            var it = Intent(this, LoginActivity::class.java);
-            startActivity(it)
+            LoginActivity_.intent(this).start()
 
             finish()
 

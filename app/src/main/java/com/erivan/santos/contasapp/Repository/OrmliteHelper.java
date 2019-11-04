@@ -2,6 +2,7 @@ package com.erivan.santos.contasapp.Repository;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Environment;
 
 import com.erivan.santos.contasapp.ApplicationCustom;
 import com.erivan.santos.contasapp.POJO.Conta;
@@ -46,7 +47,7 @@ public class OrmliteHelper extends OrmLiteSqliteOpenHelper {
     //Singleton
     public synchronized static OrmliteHelper getInstance() {
         if (instance == null)
-            instance = new OrmliteHelper(ApplicationCustom.getInstance(), "", 1);
+            instance = new OrmliteHelper(ApplicationCustom.getInstance(),"conta-app.db", 1);
 
         return instance;
     }
