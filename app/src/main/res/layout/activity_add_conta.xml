@@ -56,12 +56,12 @@
                 android:id="@+id/cbRecorrente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:text="Recorrente" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edtQtdParcelas"
@@ -74,7 +74,8 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                tools:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edtPeriodicidade"
@@ -93,7 +94,6 @@
                     android:id="@+id/edtDataVencimento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
                     android:hint="Data de vencimento"
                     android:inputType="date" />
             </com.google.android.material.textfield.TextInputLayout>

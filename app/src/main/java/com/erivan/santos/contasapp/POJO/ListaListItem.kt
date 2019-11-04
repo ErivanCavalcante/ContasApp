@@ -10,7 +10,7 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
-open class ListaListItem(var tipo: TipoLista) : AbstractItem<ListaListItem.ListaListItemViewHolder>() {
+open class ListaListItem(var tipo: TipoLista) : GenericItem() {
 
     enum class TipoLista(tipo: Int) {
         MES_ATUAL(0),
@@ -24,26 +24,31 @@ open class ListaListItem(var tipo: TipoLista) : AbstractItem<ListaListItem.Lista
     override val type: Int
         get() = R.id.rv
 
-    override fun getViewHolder(v: View): ListaListItemViewHolder {
+    override fun getCustomViewHolder(v: View): GenericItemViewHolder {
         return ListaListItemViewHolder(v)
     }
 
+    class ListaListItemViewHolder(view: View) : GenericItemViewHolder(view) {
 
-    class ListaListItemViewHolder(view: View) : FastAdapter.ViewHolder<ListaListItem>(view) {
-        val lista = view.findViewById<RecyclerView>(R.id.rv)
+        lateinit var lista: RecyclerView
 
         val itemAdapter = ItemAdapter<ListaItemListItem>()
         val fastAdapter = FastAdapter.with(itemAdapter)
 
-        init {
+        override fun setupViews(view: View) {
+            lista = view.findViewById(R.id.rv)
+
             lista.setHasFixedSize(true)
 
             val lm = LinearLayoutManager(ApplicationCustom.getInstance().applicationContext,
-                                                                LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager.HORIZONTAL, false)
+
             lista.layoutManager = lm
         }
 
-        override fun bindView(item: ListaListItem, payloads: MutableList<Any>) {
+        override fun bind(item: GenericItem?) {
+            item as ListaListItem
+
             val lista = carregar(item.tipo)
 
             val listaFinal = ArrayList<ListaItemListItem>()
@@ -57,7 +62,7 @@ open class ListaListItem(var tipo: TipoLista) : AbstractItem<ListaListItem.Lista
             this.lista.adapter = fastAdapter
         }
 
-        override fun unbindView(item: ListaListItem) {
+        override fun unbind(item: GenericItem?) {
 
         }
 

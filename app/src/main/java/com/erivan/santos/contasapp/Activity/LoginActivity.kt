@@ -3,6 +3,7 @@ package com.erivan.santos.contasapp.Activity
 import android.content.Intent
 import android.widget.Toast
 import com.erivan.santos.contasapp.MainActivity
+import com.erivan.santos.contasapp.MainActivity_
 import com.erivan.santos.contasapp.Presenter.UsuarioPresenter
 import com.erivan.santos.contasapp.R
 import com.erivan.santos.contasapp.View.UsuarioView
@@ -10,13 +11,15 @@ import kotlinx.android.synthetic.main.activity_login.*;
 import net.grandcentrix.thirtyinch.TiActivity
 import org.androidannotations.annotations.Click
 import org.androidannotations.annotations.EActivity
+import org.androidannotations.annotations.Fullscreen
 
 @EActivity(R.layout.activity_login)
+@Fullscreen
 open class LoginActivity : TiActivity<UsuarioPresenter, UsuarioView>(), UsuarioView {
 
     @Click(R.id.btLogin)
     fun clickLoginBotao() {
-        presenter.logar(edtEmail.text.toString(), edtSenha.text.toString())
+        presenter.logar(edtEmail.text.toString(), edtTelefone.text.toString())
     }
 
     @Click(R.id.btNovaConta)
@@ -26,8 +29,7 @@ open class LoginActivity : TiActivity<UsuarioPresenter, UsuarioView>(), UsuarioV
     }
 
     override fun loginOk() {
-        val it = Intent(this, MainActivity::class.java)
-        startActivity(it)
+        MainActivity_.intent(this).start()
     }
 
     override fun adicionado() {

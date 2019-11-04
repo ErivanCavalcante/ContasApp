@@ -4,6 +4,9 @@ import android.app.Application;
 
 import com.erivan.santos.contasapp.POJO.Usuario;
 
+import org.androidannotations.annotations.EApplication;
+
+@EApplication
 public class ApplicationCustom extends Application {
 
     private static ApplicationCustom app = null;

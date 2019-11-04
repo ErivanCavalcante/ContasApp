@@ -7,8 +7,10 @@ import android.os.Handler
 import com.erivan.santos.contasapp.R
 import org.androidannotations.annotations.AfterViews
 import org.androidannotations.annotations.EActivity
+import org.androidannotations.annotations.Fullscreen
 
 @EActivity(R.layout.activity_logo)
+@Fullscreen
 open class LogoActivity : AppCompatActivity() {
 
     @AfterViews

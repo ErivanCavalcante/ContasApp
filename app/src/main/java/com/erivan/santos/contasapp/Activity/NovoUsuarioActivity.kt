@@ -1,8 +1,5 @@
 package com.erivan.santos.contasapp.Activity
 
-import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.erivan.santos.contasapp.POJO.Usuario
@@ -11,10 +8,10 @@ import com.erivan.santos.contasapp.R
 import com.erivan.santos.contasapp.View.UsuarioView
 import net.grandcentrix.thirtyinch.TiActivity
 import kotlinx.android.synthetic.main.activity_novo_usuario.*
-import org.androidannotations.annotations.AfterViews
-import org.androidannotations.annotations.EActivity
+import org.androidannotations.annotations.*
 
 @EActivity(R.layout.activity_novo_usuario)
+@OptionsMenu(R.menu.menu_ok)
 open class NovoUsuarioActivity : TiActivity<UsuarioPresenter, UsuarioView>(), UsuarioView {
 
     @AfterViews
@@ -34,7 +31,7 @@ open class NovoUsuarioActivity : TiActivity<UsuarioPresenter, UsuarioView>(), Us
     }
 
     override fun adicionado() {
-
+        LoginActivity_.intent(this).start()
         finish()
     }
 
@@ -49,18 +46,14 @@ open class NovoUsuarioActivity : TiActivity<UsuarioPresenter, UsuarioView>(), Us
         finish()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_ok, menu)
+    @OptionsItem(R.id.menu_check)
+    fun menuOk() {
+        //Valida td
 
-        return true
-    }
+        //Cria o usuario
+        val usuario = Usuario(edtNome.text.toString(), edtEmail.text.toString(), edtSenha.text.toString(), edtTelefone.text.toString(), spSexo.selectedItemPosition)
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            R.id.menu_check -> presenter.adicionar(Usuario())
-            else -> super.onOptionsItemSelected(item)
-        }
-
-        return true
+        //Adiciona
+        presenter.adicionar(usuario)
     }
 }

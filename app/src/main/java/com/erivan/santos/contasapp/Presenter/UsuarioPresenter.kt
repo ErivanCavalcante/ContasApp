@@ -1,5 +1,6 @@
 package com.erivan.santos.contasapp.Presenter
 
+import com.erivan.santos.contasapp.ApplicationCustom
 import com.erivan.santos.contasapp.Model.UsuarioModel
 import com.erivan.santos.contasapp.POJO.Usuario
 import com.erivan.santos.contasapp.View.UsuarioView
@@ -16,6 +17,8 @@ class UsuarioPresenter : TiPresenter<UsuarioView>() {
             view!!.erro(500, "Usuario não exsite")
             return
         }
+
+        ApplicationCustom.getInstance().sessaoAtual = usuario
 
         view!!.loginOk()
     }

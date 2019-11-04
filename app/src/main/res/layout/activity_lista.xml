@@ -30,6 +30,7 @@
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="#9C27B0" />
+        app:rippleColor="#9C27B0"
+        tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
