@@ -27,12 +27,6 @@ open class Conta : AbstractItem<Conta.ContaViewHolder>, Parcelable {
     @DatabaseField
     var valor = 0.0f
 
-    @DatabaseField(canBeNull = true)
-    var parcelas: Int = 1
-
-    @DatabaseField(canBeNull = true)
-    var periodo_dias: Int  = 0
-
     @DatabaseField
     var dataVencimento: Date = Date()
 
@@ -56,8 +50,6 @@ open class Conta : AbstractItem<Conta.ContaViewHolder>, Parcelable {
         titulo = parcel.readString()!!
         descricao = parcel.readString()!!
         valor = parcel.readFloat()
-        parcelas = parcel.readInt()
-        periodo_dias = parcel.readInt()
         avisarVencimento = if (parcel.readInt() == 1) true else false
         pago = if (parcel.readInt() == 1) true else false
     }
@@ -72,8 +64,6 @@ open class Conta : AbstractItem<Conta.ContaViewHolder>, Parcelable {
         titulo: String,
         descricao: String,
         valor: Float,
-        parcelas: Int,
-        periodo_dias: Int,
         dataVencimento: Date,
         avisarVencimento: Boolean,
         usuario: Usuario
@@ -81,11 +71,19 @@ open class Conta : AbstractItem<Conta.ContaViewHolder>, Parcelable {
         this.titulo = titulo
         this.descricao = descricao
         this.valor = valor
-        this.parcelas = parcelas
-        this.periodo_dias = periodo_dias
         this.dataVencimento = dataVencimento
         this.avisarVencimento = avisarVencimento
         this.usuario = usuario
+    }
+
+    //Copia
+    constructor(conta: Conta) {
+        this.titulo = conta.titulo
+        this.descricao = conta.descricao
+        this.valor = conta.valor
+        this.dataVencimento = conta.dataVencimento
+        this.avisarVencimento = conta.avisarVencimento
+        this.usuario = conta.usuario
     }
 
     override fun writeToParcel(dest: Parcel?, flags: Int) {
@@ -93,8 +91,6 @@ open class Conta : AbstractItem<Conta.ContaViewHolder>, Parcelable {
         dest!!.writeString(titulo)
         dest!!.writeString(descricao)
         dest!!.writeFloat(valor)
-        dest!!.writeInt(parcelas)
-        dest!!.writeInt(periodo_dias)
         dest!!.writeInt(if (avisarVencimento) 1 else 0)
         dest!!.writeInt(if (pago) 1 else 0)
     }

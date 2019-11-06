@@ -8,7 +8,7 @@ import net.grandcentrix.thirtyinch.TiPresenter
 class ContaPresenter : TiPresenter<ContaView>() {
     val contaModel = ContaModel()
 
-    fun adicionarConta(conta: Conta) {
+    fun adicionarConta(conta: Conta, numParcelas: Int?, periodo: Int?) {
         val ret = contaModel.adicionar(conta)
 
         if (ret)
