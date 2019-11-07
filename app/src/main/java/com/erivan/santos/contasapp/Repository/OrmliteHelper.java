@@ -47,7 +47,7 @@ public class OrmliteHelper extends OrmLiteSqliteOpenHelper {
     //Singleton
     public synchronized static OrmliteHelper getInstance() {
         if (instance == null)
-            instance = new OrmliteHelper(ApplicationCustom.getInstance(),"conta-app.db", 1);
+            instance = new OrmliteHelper(ApplicationCustom.getInstance(), "conta-app.db", 1);
 
         return instance;
     }

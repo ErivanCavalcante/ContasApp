@@ -41,7 +41,7 @@ open class ContaDetalheActivity : AppCompatActivity() {
 
             c.avisarVencimento = isChecked
 
-            dao.adicionar(c)
+            dao.atualizar(c)
         }
 
         cbPago.setOnCheckedChangeListener{view, isChecked ->
@@ -50,7 +50,7 @@ open class ContaDetalheActivity : AppCompatActivity() {
 
             c.pago = isChecked
 
-            dao.adicionar(c)
+            dao.atualizar(c)
         }
     }
 

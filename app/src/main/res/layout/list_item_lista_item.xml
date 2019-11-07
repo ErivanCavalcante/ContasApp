@@ -2,13 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="120dp"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
     android:layout_margin="16dp"
+    android:gravity="center"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtNome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:text="Nome"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtDescricao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Descrição" />
 
     <TextView
         android:id="@+id/txtValor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:text="R$ 0,00"
         android:textColor="@color/colorPrimary"
@@ -19,6 +40,7 @@
         android:id="@+id/txtDataVencimento"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="12/10/2019"
         android:textStyle="bold" />
 </LinearLayout>

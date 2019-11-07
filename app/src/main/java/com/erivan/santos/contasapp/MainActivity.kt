@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.erivan.santos.contasapp.Activity.ListaActivity_
 import com.erivan.santos.contasapp.Activity.LoginActivity_
 import com.erivan.santos.contasapp.POJO.GenericItem
+import com.erivan.santos.contasapp.POJO.ListaListItem
 import com.erivan.santos.contasapp.POJO.TituloListItem
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
@@ -28,16 +29,10 @@ open class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     lateinit var rvLista: RecyclerView
 
     @ViewById
-    lateinit var fabAdd: FloatingActionButton
-
-    @ViewById
     lateinit var navView: NavigationView
 
     @ViewById
     lateinit var layDrawer: DrawerLayout
-
-    @ViewById
-    lateinit var txtNullState: TextView
 
     lateinit var toogle: ActionBarDrawerToggle
 
@@ -46,9 +41,6 @@ open class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     @AfterViews
     fun setupViews() {
-        txtNullState.visibility = View.GONE
-
-        fabAdd.visibility = View.GONE
 
         val layout = navView.getHeaderView(0)
         val txtNome = layout.findViewById<TextView>(R.id.txtNome)
@@ -84,6 +76,10 @@ open class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         finish()
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (toogle.onOptionsItemSelected(item)) true else super.onOptionsItemSelected(item)
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.menu_gerir_contas -> {
@@ -99,9 +95,12 @@ open class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     fun addOpcoes() {
         lista.add(TituloListItem("Contas do mês"))
+        lista.add(ListaListItem(ListaListItem.TipoLista.MES_ATUAL))
 
         lista.add(TituloListItem("Próximas a vencer"))
+        lista.add(ListaListItem(ListaListItem.TipoLista.PROXIMAS_VENCER))
 
         lista.add(TituloListItem("Contas vencidas"))
+        lista.add(ListaListItem(ListaListItem.TipoLista.VENCIDAS))
     }
 }

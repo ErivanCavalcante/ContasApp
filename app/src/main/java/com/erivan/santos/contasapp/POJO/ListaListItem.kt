@@ -8,7 +8,6 @@ import com.erivan.santos.contasapp.R
 import com.erivan.santos.contasapp.Repository.ContaDao
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
-import com.mikepenz.fastadapter.items.AbstractItem
 
 open class ListaListItem(var tipo: TipoLista) : GenericItem() {
 
@@ -30,20 +29,24 @@ open class ListaListItem(var tipo: TipoLista) : GenericItem() {
 
     class ListaListItemViewHolder(view: View) : GenericItemViewHolder(view) {
 
-        lateinit var lista: RecyclerView
+        var lista: RecyclerView
 
-        val itemAdapter = ItemAdapter<ListaItemListItem>()
-        val fastAdapter = FastAdapter.with(itemAdapter)
-
-        override fun setupViews(view: View) {
+        init {
             lista = view.findViewById(R.id.rv)
 
             lista.setHasFixedSize(true)
 
             val lm = LinearLayoutManager(ApplicationCustom.getInstance().applicationContext,
-                LinearLayoutManager.HORIZONTAL, false)
+                                            LinearLayoutManager.HORIZONTAL, false)
 
             lista.layoutManager = lm
+        }
+
+        val itemAdapter = ItemAdapter<ListaItemListItem>()
+        val fastAdapter = FastAdapter.with(itemAdapter)
+
+        override fun setupViews(view: View) {
+
         }
 
         override fun bind(item: GenericItem?) {
@@ -54,7 +57,7 @@ open class ListaListItem(var tipo: TipoLista) : GenericItem() {
             val listaFinal = ArrayList<ListaItemListItem>()
 
             for (c : Conta in lista) {
-                listaFinal.add(ListaItemListItem(c.valor, c.dataVencimento))
+                listaFinal.add(ListaItemListItem(c.titulo, c.descricao, c.valor, c.dataVencimento, c.pago))
             }
 
             itemAdapter.add(listaFinal)

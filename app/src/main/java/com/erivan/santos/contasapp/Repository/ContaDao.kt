@@ -39,10 +39,12 @@ class ContaDao : BaseDaoImpl<Conta, Int>
         var mes: String = f.format(hoje)
 
         //Pega as contas do mes atual
-        var sql = "SELECT id, titulo, descricao, valor, parcelas, periodo_dias, dataVencimento, avisarVencimento, pago FROM contas " +
-                "WHERE usuario_id = ${usuario.id} AND "
+        var sql = "SELECT id, titulo, descricao, valor, dataVencimento, avisarVencimento, pago FROM contas " +
+                "WHERE usuario_id = ${usuario.id} AND " +
                 "pago = 0 " +
                 "AND strftime('%m', dataVencimento) = '$mes'";
+
+
 
         var result : GenericRawResults<Conta>  = queryRaw(sql, object : RawRowMapper<Conta> {
             override fun mapRow(columnNames: Array<out String>?, resultColumns: Array<out String>?): Conta {
@@ -67,29 +69,46 @@ class ContaDao : BaseDaoImpl<Conta, Int>
     }
 
     fun pesquisarPorVencidas(usuario: Usuario) : List<Conta> {
-        var dataHoje = Date()
+        //Pega as contas do mes atual
+        var sql = "SELECT id, titulo, descricao, valor, dataVencimento, avisarVencimento, pago FROM contas " +
+                "WHERE usuario_id = ${usuario.id} AND " +
+                "pago = 0 " +
+                "AND date('now') > dataVencimento";
 
-        return queryBuilder().where()
-            .eq("usuario_id", usuario.id)
-            .and()
-            .eq("pago", false)
-            .and()
-            .gt("dataVencimento", dataHoje)
-            .query()
+        var result : GenericRawResults<Conta>  = queryRaw(sql, object : RawRowMapper<Conta> {
+            override fun mapRow(columnNames: Array<out String>?, resultColumns: Array<out String>?): Conta {
+                var conta : Conta = Conta()
+
+                var f = SimpleDateFormat("yyyy-MM-dd HH:mm")
+
+                conta.usuario = usuario
+                conta.id = resultColumns!!.get(0).toInt()
+                conta.titulo = resultColumns!!.get(1)
+                conta.descricao = resultColumns!!.get(2)
+                conta.valor = resultColumns!!.get(3).toFloat()
+                conta.dataVencimento = f.parse(resultColumns!!.get(4))
+                conta.avisarVencimento = resultColumns!!.get(5).toBoolean()
+                conta.pago = resultColumns!!.get(6).toBoolean()
+
+                return conta
+            }
+        })
+
+        return result.results
     }
 
     //Pesquisam todas q faltam ate 8 dias para vencer ou ja venceram
     fun pesquisarPorProximasVencer(usuario: Usuario) : List<Conta> {
         var hoje = Date()
-        var f = SimpleDateFormat("yyyy-MM-dd HH:mm")
+        var f = SimpleDateFormat("yyyy-MM-dd")
 
         var dataFormatada: String = f.format(hoje)
 
         //Pega as contas do mes atual
-        var sql = "SELECT id, titulo, descricao, valor, parcelas, periodo_dias, dataVencimento, avisarVencimento, pago FROM contas " +
-                "WHERE usuario_id = ${usuario.id} AND "
+        var sql = "SELECT id, titulo, descricao, valor, dataVencimento, avisarVencimento, pago FROM contas " +
+                "WHERE usuario_id = ${usuario.id} AND " +
                 "pago = 0 " +
-                "AND $dataFormatada > datetime(dataVencimento, '-8 days') AND $dataFormatada < dataVencimento";
+                "AND '$dataFormatada' > date(dataVencimento, '-8 days') AND '$dataFormatada' < dataVencimento";
 
         var result : GenericRawResults<Conta>  = queryRaw(sql, object : RawRowMapper<Conta> {
             override fun mapRow(columnNames: Array<out String>?, resultColumns: Array<out String>?): Conta {
