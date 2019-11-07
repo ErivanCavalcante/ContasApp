@@ -118,7 +118,7 @@ open class AddContaActivity : TiActivity<ContaPresenter, ContaView>(), ContaView
         conta.descricao = edtDescricao.text.toString()
         conta.valor = edtValor.text.toString().toFloat()
         conta.avisarVencimento = cbAvisarVencimento.isChecked
-        conta.dataVencimento = SimpleDateFormat("dd/MM/YYYY").parse(edtDataVencimento.text.toString())
+        conta.dataVencimento = SimpleDateFormat("dd/MM/yyyy").parse(edtDataVencimento.text.toString())
 
         //Se eh recorrente cria o numero de contas necessarios
         if (cbRecorrente.isChecked) {

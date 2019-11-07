@@ -43,10 +43,8 @@ class ContaModel {
 
         var erro = false
         var calendario = Calendar.getInstance();
-        //calendario.se
-        calendario.set(Calendar.YEAR, conta.dataVencimento.year)
-        calendario.set(Calendar.MONTH, conta.dataVencimento.month)
-        calendario.set(Calendar.DAY_OF_MONTH, conta.dataVencimento.day)
+
+        calendario.time = conta.dataVencimento
 
         //Tem parcelas entao cria as novas conta
         for (i in 0 until numParcelas) {
@@ -62,7 +60,7 @@ class ContaModel {
             }
 
             //No final aumenta o numero de dias para a nova conta
-            calendario.add(Calendar.DAY_OF_YEAR, periodo!!)
+            calendario.add(Calendar.DATE, periodo!!)
         }
 
         return !erro

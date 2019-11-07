@@ -138,7 +138,7 @@ class ContaDao : BaseDaoImpl<Conta, Int>
         return queryBuilder().where()
             .eq("usuario_id", usuario.id)
             .and()
-            .like("descricao", descricao)
+            .eq("descricao", descricao)
             .query()
     }
 }

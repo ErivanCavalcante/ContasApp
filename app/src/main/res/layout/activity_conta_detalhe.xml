@@ -30,13 +30,13 @@
         android:id="@+id/txtValor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="TextView"
         android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/txtDescricao"
-        app:layout_constraintTop_toBottomOf="@+id/txtDescricao" />
+        app:layout_constraintTop_toBottomOf="@+id/txtDataVencimento" />
 
     <TextView
         android:id="@+id/txtDataVencimento"
@@ -45,16 +45,16 @@
         android:layout_marginTop="8dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="@+id/txtValor"
-        app:layout_constraintTop_toBottomOf="@+id/txtValor" />
+        app:layout_constraintTop_toBottomOf="@+id/txtDescricao" />
 
     <CheckBox
         android:id="@+id/cbAvisarVencimento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="Avisar antes do vencimento"
         app:layout_constraintStart_toStartOf="@+id/txtDataVencimento"
-        app:layout_constraintTop_toBottomOf="@+id/txtDataVencimento" />
+        app:layout_constraintTop_toBottomOf="@+id/txtValor" />
 
     <CheckBox
         android:id="@+id/cbPago"

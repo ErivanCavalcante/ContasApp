@@ -3,6 +3,7 @@ package com.erivan.santos.contasapp
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
@@ -35,6 +36,9 @@ open class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     @ViewById
     lateinit var layDrawer: DrawerLayout
 
+    @ViewById
+    lateinit var txtNullState: TextView
+
     lateinit var toogle: ActionBarDrawerToggle
 
     val lista = ItemAdapter<GenericItem>()
@@ -42,7 +46,9 @@ open class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
     @AfterViews
     fun setupViews() {
-        //fabAdd.visibility = View.GONE
+        txtNullState.visibility = View.GONE
+
+        fabAdd.visibility = View.GONE
 
         val layout = navView.getHeaderView(0)
         val txtNome = layout.findViewById<TextView>(R.id.txtNome)

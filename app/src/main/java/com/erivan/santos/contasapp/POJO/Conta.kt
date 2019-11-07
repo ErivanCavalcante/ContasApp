@@ -54,6 +54,7 @@ open class Conta : AbstractItem<Conta.ContaViewHolder>, Parcelable {
         valor = parcel.readFloat()
         avisarVencimento = if (parcel.readInt() == 1) true else false
         pago = if (parcel.readInt() == 1) true else false
+        dataVencimento = parcel.readSerializable() as Date
     }
 
     override fun getViewHolder(v: View): ContaViewHolder {
@@ -95,6 +96,7 @@ open class Conta : AbstractItem<Conta.ContaViewHolder>, Parcelable {
         dest!!.writeFloat(valor)
         dest!!.writeInt(if (avisarVencimento) 1 else 0)
         dest!!.writeInt(if (pago) 1 else 0)
+        dest!!.writeSerializable(dataVencimento)
     }
 
     override fun describeContents(): Int {

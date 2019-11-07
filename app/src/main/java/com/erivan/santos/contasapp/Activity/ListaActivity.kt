@@ -3,6 +3,8 @@ package com.erivan.santos.contasapp.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,10 +22,12 @@ import org.androidannotations.annotations.Click
 import org.androidannotations.annotations.EActivity
 
 @EActivity(R.layout.activity_lista)
-open class ListaActivity : TiActivity<ContaPresenter, ContaView>(), ContaView, SearchView.OnQueryTextListener {
+open class ListaActivity : TiActivity<ContaPresenter, ContaView>(), ContaView, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
 
     val lista = ItemAdapter<Conta>()
     val adapter = FastAdapter.with(lista)
+
+    internal var pesquisou = false
 
     @AfterViews
     fun setupViews() {
@@ -61,10 +65,11 @@ open class ListaActivity : TiActivity<ContaPresenter, ContaView>(), ContaView, S
     }
 
     override fun lista(tipo: Int, contas: List<Conta>) {
-        if (contas.size > 0) {
-            lista.clear()
-            lista.add(contas)
-        }
+        if (contas.size == 0)  txtNullState.visibility = View.VISIBLE
+        else txtNullState.visibility = View.GONE
+
+        lista.clear()
+        lista.add(contas)
     }
 
     override fun erro(code: Int, erro: String) {
@@ -72,8 +77,7 @@ open class ListaActivity : TiActivity<ContaPresenter, ContaView>(), ContaView, S
     }
 
     override fun onBackPressed() {
-        //MainActivity_.intent(this).start()
-        LoginActivity_.intent(this).start()
+        MainActivity_.intent(this).start()
         finish()
     }
 
@@ -104,6 +108,22 @@ open class ListaActivity : TiActivity<ContaPresenter, ContaView>(), ContaView, S
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
+        pesquisou = if (newText!!.isEmpty()) false else true;
+
+        return true
+    }
+
+    override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
+        pesquisou = false
+
+        return true
+    }
+
+    override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
+        if (!pesquisou) {
+            presenter!!.carregarTodas()
+        }
+
         return true
     }
 }

@@ -48,8 +48,7 @@ open class LoginActivity : TiActivity<UsuarioPresenter, UsuarioView>(), UsuarioV
     }
 
     override fun loginOk() {
-        //MainActivity_.intent(this).start()
-        ListaActivity_.intent(this).start()
+        MainActivity_.intent(this).start()
         finish()
     }
 
