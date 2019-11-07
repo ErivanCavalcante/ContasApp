@@ -85,6 +85,14 @@ open class NovoUsuarioActivity : TiActivity<UsuarioPresenter, UsuarioView>(), Us
     }
 
     override fun onValidationFailed(errors: MutableList<ValidationError>?) {
+        for (erro: ValidationError in errors!!) {
+            val view = erro.view
+            val msg = erro.getCollatedErrorMessage(this)
+
+            if (view is TextInputEditText) {
+                view.setError(msg)
+            }
+        }
     }
 
     override fun onValidationSucceeded() {
@@ -93,5 +101,9 @@ open class NovoUsuarioActivity : TiActivity<UsuarioPresenter, UsuarioView>(), Us
 
         //Adiciona
         presenter.adicionar(usuario)
+    }
+
+    override fun viewCriada() {
+
     }
 }

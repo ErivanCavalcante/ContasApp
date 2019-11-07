@@ -28,6 +28,10 @@ class ContaDao : BaseDaoImpl<Conta, Int>
         return delete(conta) > 0
     }
 
+    fun pesquisarPorId(contaId: Int) : Conta {
+        return queryForId(contaId)
+    }
+
     fun pesquisarPorMes(usuario: Usuario) : List<Conta> {
         var hoje = Date()
         var f = SimpleDateFormat("MM")
@@ -129,7 +133,12 @@ class ContaDao : BaseDaoImpl<Conta, Int>
             .query()
     }
 
-    fun pesquisarAvancado(data : Date) : List<Conta> {
-        return ArrayList<Conta>()
+    fun pesquisarAvancado(usuario: Usuario, descricao: String) : List<Conta> {
+
+        return queryBuilder().where()
+            .eq("usuario_id", usuario.id)
+            .and()
+            .like("descricao", descricao)
+            .query()
     }
 }

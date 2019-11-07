@@ -1,9 +1,11 @@
 package com.erivan.santos.contasapp.POJO
 
+import android.graphics.Color
 import android.os.Parcel
 import android.os.Parcelable
 import android.view.View
 import android.widget.TextView
+import com.erivan.santos.contasapp.ApplicationCustom_
 import com.erivan.santos.contasapp.R
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
@@ -113,6 +115,11 @@ open class Conta : AbstractItem<Conta.ContaViewHolder>, Parcelable {
             txtDescricao.text = item.descricao
             txtValor.text = "R$ " + item.valor
             txtDataVencimento.text = f.format(item.dataVencimento)
+
+            if (item.pago == true)
+                txtStatus.setBackgroundColor(ApplicationCustom_.getInstance().resources.getColor(R.color.colorPrimary))
+            else
+                txtStatus.setBackgroundColor(Color.RED)
         }
 
         override fun unbindView(item: Conta) {

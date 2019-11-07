@@ -14,9 +14,9 @@
         <activity android:name=".Activity.AddContaActivity_" android:label="Adicionar uma conta"/>
         <activity android:name=".Activity.ListaActivity_" android:label="Contas"/>
         <activity android:name=".Activity.NovoUsuarioActivity_" android:label="Adicionar um usuário"/>
-        <activity android:name=".Activity.LoginActivity_" android:label="Login"/>
+        <activity android:name=".Activity.LoginActivity_" android:label="Acesse sua conta"/>
         <activity android:name=".MainActivity_" android:label="Home"/>
-        <activity android:name=".Activity.LogoActivity_" android:label="Logo">
+        <activity android:name=".Activity.LogoActivity_" android:label="Conta App">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

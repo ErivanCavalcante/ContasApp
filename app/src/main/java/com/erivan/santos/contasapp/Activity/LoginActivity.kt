@@ -48,7 +48,9 @@ open class LoginActivity : TiActivity<UsuarioPresenter, UsuarioView>(), UsuarioV
     }
 
     override fun loginOk() {
-        MainActivity_.intent(this).start()
+        //MainActivity_.intent(this).start()
+        ListaActivity_.intent(this).start()
+        finish()
     }
 
     override fun adicionado() {
@@ -65,11 +67,21 @@ open class LoginActivity : TiActivity<UsuarioPresenter, UsuarioView>(), UsuarioV
     }
 
     override fun onValidationFailed(errors: MutableList<ValidationError>?) {
-        
+        for (erro: ValidationError in errors!!) {
+            val view = erro.view
+            val msg = erro.getCollatedErrorMessage(this)
+
+            if (view is TextInputEditText) {
+                view.setError(msg)
+            }
+        }
     }
 
     override fun onValidationSucceeded() {
         presenter.logar(edtEmail.text.toString(), edtSenha.text.toString())
     }
 
+    override fun viewCriada() {
+
+    }
 }

@@ -19,8 +19,8 @@
 
     <TextView
         android:id="@+id/txtDescricao"
-        android:layout_width="59dp"
-        android:layout_height="18dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="@+id/txtTitulo"
@@ -32,6 +32,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="TextView"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/txtDescricao"
         app:layout_constraintTop_toBottomOf="@+id/txtDescricao" />
 

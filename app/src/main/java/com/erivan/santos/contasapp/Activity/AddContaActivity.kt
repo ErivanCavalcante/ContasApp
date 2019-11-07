@@ -100,6 +100,14 @@ open class AddContaActivity : TiActivity<ContaPresenter, ContaView>(), ContaView
     }
 
     override fun onValidationFailed(errors: MutableList<ValidationError>?) {
+        for (erro: ValidationError in errors!!) {
+            val view = erro.view
+            val msg = erro.getCollatedErrorMessage(this)
+
+            if (view is TextInputEditText) {
+                view.setError(msg)
+            }
+        }
     }
 
     override fun onValidationSucceeded() {
@@ -120,6 +128,10 @@ open class AddContaActivity : TiActivity<ContaPresenter, ContaView>(), ContaView
         else {
             presenter!!.adicionarConta(conta, null, null)
         }
+
+    }
+
+    override fun viewCriada() {
 
     }
 }

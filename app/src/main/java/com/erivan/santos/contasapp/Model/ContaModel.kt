@@ -9,11 +9,25 @@ import kotlin.collections.ArrayList
 class ContaModel {
     var contaDao = ContaDao()
 
-    fun pegarTodas() : List<Conta> {
+    fun pegarTodas(tipo: Int) : List<Conta> {
         if (ApplicationCustom_.getInstance().sessaoAtual == null)
             return ArrayList<Conta>()
 
-        return contaDao.pesquisarTodasAberto(ApplicationCustom_.getInstance().sessaoAtual)
+        when(tipo) {
+            0 -> return contaDao.pesquisarTodasAberto(ApplicationCustom_.getInstance().sessaoAtual)
+            1 -> return contaDao.pesquisarPorMes(ApplicationCustom_.getInstance().sessaoAtual)
+            2 -> return contaDao.pesquisarPorVencidas(ApplicationCustom_.getInstance().sessaoAtual)
+            3 -> return contaDao.pesquisarPorProximasVencer(ApplicationCustom_.getInstance().sessaoAtual)
+        }
+
+        return ArrayList<Conta>()
+    }
+
+    fun pegarTodasFiltro(descricao: String) : List<Conta> {
+        if (ApplicationCustom_.getInstance().sessaoAtual == null)
+            return ArrayList<Conta>()
+
+        return contaDao.pesquisarAvancado(ApplicationCustom_.getInstance().sessaoAtual, descricao)
     }
 
     fun adicionar(conta: Conta, numParcelas: Int?, periodo: Int?) : Boolean {

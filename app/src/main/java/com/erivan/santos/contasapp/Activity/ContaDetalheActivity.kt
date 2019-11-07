@@ -4,8 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.erivan.santos.contasapp.POJO.Conta
 import com.erivan.santos.contasapp.R
+import com.erivan.santos.contasapp.Repository.ContaDao
 import kotlinx.android.synthetic.main.activity_conta_detalhe.*
-import org.androidannotations.annotations.AfterExtras
+import org.androidannotations.annotations.AfterViews
 import org.androidannotations.annotations.EActivity
 import org.androidannotations.annotations.Extra
 import java.text.SimpleDateFormat
@@ -17,17 +18,40 @@ open class ContaDetalheActivity : AppCompatActivity() {
     lateinit var conta: Conta
 
     override fun onBackPressed() {
+        ListaActivity_.intent(this)
+                        .start();
+
         finish()
     }
 
-    @AfterExtras
+    @AfterViews
     fun carrega() {
-        txtTitulo.text = conta.titulo
-        txtDescricao.text = conta.descricao
+        txtTitulo.text = "Nome: ${conta.titulo}"
+        txtDescricao.text = "Descrição: " + conta.descricao
         txtValor.text = "R$ ${conta.valor}"
-        txtDataVencimento.text = SimpleDateFormat("dd/MM/yyyy").format(conta.dataVencimento)
+        txtDataVencimento.text = "Data de vencimento: " + SimpleDateFormat("dd/MM/yyyy").format(conta.dataVencimento)
+
         cbAvisarVencimento.setChecked(conta.avisarVencimento)
         cbPago.setChecked(conta.pago)
+
+        //Para nao ter q criar uma funcao no presenter a modficacao do banco de dados sera feita aqui mesmo
+        cbAvisarVencimento.setOnCheckedChangeListener{view, isChecked ->
+            val dao = ContaDao()
+            val c = dao.pesquisarPorId(conta.id)
+
+            c.avisarVencimento = isChecked
+
+            dao.adicionar(c)
+        }
+
+        cbPago.setOnCheckedChangeListener{view, isChecked ->
+            val dao = ContaDao()
+            val c = dao.pesquisarPorId(conta.id)
+
+            c.pago = isChecked
+
+            dao.adicionar(c)
+        }
     }
 
 }

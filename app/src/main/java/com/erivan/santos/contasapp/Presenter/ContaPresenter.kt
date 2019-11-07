@@ -8,6 +8,12 @@ import net.grandcentrix.thirtyinch.TiPresenter
 class ContaPresenter : TiPresenter<ContaView>() {
     val contaModel = ContaModel()
 
+    override fun onAttachView(view: ContaView) {
+        super.onAttachView(view)
+
+        view.viewCriada()
+    }
+
     fun adicionarConta(conta: Conta, numParcelas: Int?, periodo: Int?) {
         val ret = contaModel.adicionar(conta, numParcelas, periodo)
 
@@ -18,22 +24,22 @@ class ContaPresenter : TiPresenter<ContaView>() {
     }
 
     fun carregarTodas() {
-        view!!.lista(0, contaModel.pegarTodas())
+        view!!.lista(0, contaModel.pegarTodas(0))
     }
 
     fun carregarTodasMes() {
-        view!!.lista(1, contaModel.pegarTodas())
+        view!!.lista(1, contaModel.pegarTodas(1))
     }
 
     fun carregarVencidas() {
-        view!!.lista(2, contaModel.pegarTodas())
+        view!!.lista(2, contaModel.pegarTodas(2))
     }
 
     fun carregarProximasVencer() {
-        view!!.lista(3, contaModel.pegarTodas())
+        view!!.lista(3, contaModel.pegarTodas(3))
     }
 
-    fun carregarComFiltro() {
-        view!!.lista(4, contaModel.pegarTodas())
+    fun carregarComFiltro(descricao: String) {
+        view!!.lista(4, contaModel.pegarTodasFiltro(descricao))
     }
 }
