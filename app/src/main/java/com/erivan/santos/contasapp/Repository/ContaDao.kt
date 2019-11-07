@@ -51,11 +51,9 @@ class ContaDao : BaseDaoImpl<Conta, Int>
                 conta.titulo = resultColumns!!.get(1)
                 conta.descricao = resultColumns!!.get(2)
                 conta.valor = resultColumns!!.get(3).toFloat()
-                conta.parcelas = resultColumns!!.get(4).toInt()
-                conta.periodo_dias = resultColumns!!.get(5).toInt()
-                conta.dataVencimento = f.parse(resultColumns!!.get(6))
-                conta.avisarVencimento = resultColumns!!.get(7).toBoolean()
-                conta.pago = resultColumns!!.get(8).toBoolean()
+                conta.dataVencimento = f.parse(resultColumns!!.get(4))
+                conta.avisarVencimento = resultColumns!!.get(5).toBoolean()
+                conta.pago = resultColumns!!.get(6).toBoolean()
 
                 return conta
             }
@@ -100,11 +98,9 @@ class ContaDao : BaseDaoImpl<Conta, Int>
                 conta.titulo = resultColumns!!.get(1)
                 conta.descricao = resultColumns!!.get(2)
                 conta.valor = resultColumns!!.get(3).toFloat()
-                conta.parcelas = resultColumns!!.get(4).toInt()
-                conta.periodo_dias = resultColumns!!.get(5).toInt()
-                conta.dataVencimento = f.parse(resultColumns!!.get(6))
-                conta.avisarVencimento = resultColumns!!.get(7).toBoolean()
-                conta.pago = resultColumns!!.get(8).toBoolean()
+                conta.dataVencimento = f.parse(resultColumns!!.get(4))
+                conta.avisarVencimento = resultColumns!!.get(5).toBoolean()
+                conta.pago = resultColumns!!.get(6).toBoolean()
 
                 return conta
             }

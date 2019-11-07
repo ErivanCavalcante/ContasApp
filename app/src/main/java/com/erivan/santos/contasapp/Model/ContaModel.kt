@@ -27,18 +27,31 @@ class ContaModel {
         if (numParcelas == null)
             return contaDao.adicionar(conta)
 
-        var ok = true
+        var erro = false
         var calendario = Calendar.getInstance();
         //calendario.se
+        calendario.set(Calendar.YEAR, conta.dataVencimento.year)
+        calendario.set(Calendar.MONTH, conta.dataVencimento.month)
+        calendario.set(Calendar.DAY_OF_MONTH, conta.dataVencimento.day)
+
         //Tem parcelas entao cria as novas conta
         for (i in 0 until numParcelas) {
+            //Cria a conta
+            var contaLocal = Conta(conta)
 
+            //Pega a data de vencimento
+            contaLocal.dataVencimento = calendario.time
+
+            //Salva a conta
+            if (!contaDao.adicionar(contaLocal)) {
+                erro = true
+            }
 
             //No final aumenta o numero de dias para a nova conta
             calendario.add(Calendar.DAY_OF_YEAR, periodo!!)
         }
 
-        return ok
+        return !erro
     }
 
     fun pegarTodasMes() : List<Conta> {

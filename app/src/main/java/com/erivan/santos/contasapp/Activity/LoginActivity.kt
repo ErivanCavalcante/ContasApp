@@ -1,25 +1,44 @@
 package com.erivan.santos.contasapp.Activity
 
-import android.content.Intent
 import android.widget.Toast
-import com.erivan.santos.contasapp.MainActivity
 import com.erivan.santos.contasapp.MainActivity_
 import com.erivan.santos.contasapp.Presenter.UsuarioPresenter
 import com.erivan.santos.contasapp.R
 import com.erivan.santos.contasapp.View.UsuarioView
-import kotlinx.android.synthetic.main.activity_login.*;
+import com.google.android.material.textfield.TextInputEditText
+import com.mobsandgeeks.saripaar.ValidationError
+import com.mobsandgeeks.saripaar.Validator
+import com.mobsandgeeks.saripaar.annotation.Email
+import com.mobsandgeeks.saripaar.annotation.NotEmpty
+import com.mobsandgeeks.saripaar.annotation.Password
 import net.grandcentrix.thirtyinch.TiActivity
-import org.androidannotations.annotations.Click
-import org.androidannotations.annotations.EActivity
-import org.androidannotations.annotations.Fullscreen
+import org.androidannotations.annotations.*
 
 @EActivity(R.layout.activity_login)
 @Fullscreen
-open class LoginActivity : TiActivity<UsuarioPresenter, UsuarioView>(), UsuarioView {
+open class LoginActivity : TiActivity<UsuarioPresenter, UsuarioView>(), UsuarioView, Validator.ValidationListener {
+
+    @NotEmpty
+    @Email
+    @ViewById
+    lateinit var edtEmail: TextInputEditText
+
+    @NotEmpty
+    @Password(min = 6)
+    @ViewById
+    lateinit var edtSenha: TextInputEditText
+
+    lateinit var validator: Validator
+
+    @AfterViews
+    fun setupViews() {
+        validator = Validator(this)
+        validator.setValidationListener(this)
+    }
 
     @Click(R.id.btLogin)
     fun clickLoginBotao() {
-        presenter.logar(edtEmail.text.toString(), edtTelefone.text.toString())
+        validator.validate()
     }
 
     @Click(R.id.btNovaConta)
@@ -43,6 +62,14 @@ open class LoginActivity : TiActivity<UsuarioPresenter, UsuarioView>(), UsuarioV
 
     override fun providePresenter(): UsuarioPresenter {
         return UsuarioPresenter()
+    }
+
+    override fun onValidationFailed(errors: MutableList<ValidationError>?) {
+        
+    }
+
+    override fun onValidationSucceeded() {
+        presenter.logar(edtEmail.text.toString(), edtSenha.text.toString())
     }
 
 }

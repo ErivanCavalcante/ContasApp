@@ -9,7 +9,7 @@ class ContaPresenter : TiPresenter<ContaView>() {
     val contaModel = ContaModel()
 
     fun adicionarConta(conta: Conta, numParcelas: Int?, periodo: Int?) {
-        val ret = contaModel.adicionar(conta)
+        val ret = contaModel.adicionar(conta, numParcelas, periodo)
 
         if (ret)
             view!!.adicionou()

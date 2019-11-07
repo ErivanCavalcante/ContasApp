@@ -100,7 +100,6 @@ open class AddContaActivity : TiActivity<ContaPresenter, ContaView>(), ContaView
     }
 
     override fun onValidationFailed(errors: MutableList<ValidationError>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onValidationSucceeded() {
@@ -116,10 +115,11 @@ open class AddContaActivity : TiActivity<ContaPresenter, ContaView>(), ContaView
         //Se eh recorrente cria o numero de contas necessarios
         if (cbRecorrente.isChecked) {
             //Adiciona todas as contas aqui dentro
+            presenter!!.adicionarConta(conta, edtQtdParcelas.text.toString().toInt(), edtPeriodicidade.text.toString().toInt())
         }
-
-
-
+        else {
+            presenter!!.adicionarConta(conta, null, null)
+        }
 
     }
 }

@@ -10,16 +10,11 @@ import org.androidannotations.annotations.EActivity
 import org.androidannotations.annotations.Extra
 import java.text.SimpleDateFormat
 
-@EActivity
+@EActivity(R.layout.activity_conta_detalhe)
 open class ContaDetalheActivity : AppCompatActivity() {
 
     @Extra("conta")
     lateinit var conta: Conta
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_conta_detalhe)
-    }
 
     override fun onBackPressed() {
         finish()
