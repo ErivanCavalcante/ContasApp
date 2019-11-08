@@ -23,6 +23,15 @@ class ContaPresenter : TiPresenter<ContaView>() {
             view!!.erro(500, "Erro ao adicionar a conta")
     }
 
+    fun removerConta(conta: Conta) {
+        val ret = contaModel.remover(conta)
+
+        if (ret)
+            view!!.removeu()
+        else
+            view!!.erro(500, "Erro ao remover a conta")
+    }
+
     fun carregarTodas() {
         view!!.lista(0, contaModel.pegarTodas(0))
     }

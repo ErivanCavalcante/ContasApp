@@ -35,6 +35,9 @@ open class ListaItemListItem(var nome: String, var descricao: String, var valor:
 
             if (item.pago == false)
                 txtValor.setTextColor(Color.RED)
+            else {
+                txtValor.setTextColor(Color.GREEN)
+            }
         }
 
         override fun unbindView(item: ListaItemListItem) {

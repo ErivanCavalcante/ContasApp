@@ -14,7 +14,7 @@ class ContaModel {
             return ArrayList<Conta>()
 
         when(tipo) {
-            0 -> return contaDao.pesquisarTodasAberto(ApplicationCustom_.getInstance().sessaoAtual)
+            0 -> return contaDao.pesquisarTodas(ApplicationCustom_.getInstance().sessaoAtual)
             1 -> return contaDao.pesquisarPorMes(ApplicationCustom_.getInstance().sessaoAtual)
             2 -> return contaDao.pesquisarPorVencidas(ApplicationCustom_.getInstance().sessaoAtual)
             3 -> return contaDao.pesquisarPorProximasVencer(ApplicationCustom_.getInstance().sessaoAtual)
@@ -66,31 +66,7 @@ class ContaModel {
         return !erro
     }
 
-    fun pegarTodasMes() : List<Conta> {
-        if (ApplicationCustom_.getInstance().sessaoAtual == null)
-            return ArrayList<Conta>()
-
-        return contaDao.pesquisarPorMes(ApplicationCustom_.getInstance().sessaoAtual)
-    }
-
-    fun pegarTodasVencidas() : List<Conta> {
-        if (ApplicationCustom_.getInstance().sessaoAtual == null)
-            return ArrayList<Conta>()
-
-        return contaDao.pesquisarPorVencidas(ApplicationCustom_.getInstance().sessaoAtual)
-    }
-
-    fun pegarProximasVencer() : List<Conta> {
-        if (ApplicationCustom_.getInstance().sessaoAtual == null)
-            return ArrayList<Conta>()
-
-        return contaDao.pesquisarPorProximasVencer(ApplicationCustom_.getInstance().sessaoAtual)
-    }
-
-    fun pegarComFiltro() : List<Conta> {
-        if (ApplicationCustom_.getInstance().sessaoAtual == null)
-            return ArrayList<Conta>()
-
-        return contaDao.pesquisarTodasAberto(ApplicationCustom_.getInstance().sessaoAtual)
+    fun remover(conta: Conta) : Boolean {
+        return contaDao.remover(conta)
     }
 }

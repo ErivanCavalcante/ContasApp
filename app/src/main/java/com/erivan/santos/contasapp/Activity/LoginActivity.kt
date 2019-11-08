@@ -1,9 +1,13 @@
 package com.erivan.santos.contasapp.Activity
 
 import android.widget.Toast
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
+import com.erivan.santos.contasapp.ApplicationCustom_
 import com.erivan.santos.contasapp.MainActivity_
 import com.erivan.santos.contasapp.Presenter.UsuarioPresenter
 import com.erivan.santos.contasapp.R
+import com.erivan.santos.contasapp.Receiver.AvisarVencimentoWorker
 import com.erivan.santos.contasapp.View.UsuarioView
 import com.google.android.material.textfield.TextInputEditText
 import com.mobsandgeeks.saripaar.ValidationError
@@ -13,6 +17,7 @@ import com.mobsandgeeks.saripaar.annotation.NotEmpty
 import com.mobsandgeeks.saripaar.annotation.Password
 import net.grandcentrix.thirtyinch.TiActivity
 import org.androidannotations.annotations.*
+import java.util.concurrent.TimeUnit
 
 @EActivity(R.layout.activity_login)
 @Fullscreen
@@ -48,6 +53,7 @@ open class LoginActivity : TiActivity<UsuarioPresenter, UsuarioView>(), UsuarioV
     }
 
     override fun loginOk() {
+        //inicarServicoLembrete()
         MainActivity_.intent(this).start()
         finish()
     }
@@ -82,5 +88,14 @@ open class LoginActivity : TiActivity<UsuarioPresenter, UsuarioView>(), UsuarioV
 
     override fun viewCriada() {
 
+    }
+
+    private fun inicarServicoLembrete() {
+        val work = OneTimeWorkRequest.Builder(AvisarVencimentoWorker::class.java)
+                                    .setInitialDelay(1, TimeUnit.MINUTES)
+                                    .build()
+
+        WorkManager.getInstance(ApplicationCustom_.getInstance())
+            .enqueue(work)
     }
 }

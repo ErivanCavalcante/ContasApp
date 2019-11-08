@@ -91,6 +91,10 @@ open class AddContaActivity : TiActivity<ContaPresenter, ContaView>(), ContaView
         onBackPressed()
     }
 
+    override fun removeu() {
+
+    }
+
     override fun lista(tipo: Int, contas: List<Conta>) {
 
     }

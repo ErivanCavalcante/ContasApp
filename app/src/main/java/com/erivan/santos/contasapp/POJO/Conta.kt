@@ -77,6 +77,7 @@ open class Conta : AbstractItem<Conta.ContaViewHolder>, Parcelable {
         this.dataVencimento = dataVencimento
         this.avisarVencimento = avisarVencimento
         this.usuario = usuario
+        this.pago = false
     }
 
     //Copia
@@ -87,6 +88,7 @@ open class Conta : AbstractItem<Conta.ContaViewHolder>, Parcelable {
         this.dataVencimento = conta.dataVencimento
         this.avisarVencimento = conta.avisarVencimento
         this.usuario = conta.usuario
+        this.pago = conta.pago
     }
 
     override fun writeToParcel(dest: Parcel?, flags: Int) {

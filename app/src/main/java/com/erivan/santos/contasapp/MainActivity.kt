@@ -72,7 +72,6 @@ open class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     }
 
     override fun onBackPressed() {
-        LoginActivity_.intent(this).start()
         finish()
     }
 
@@ -87,7 +86,10 @@ open class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 finish()
             }
 
-            R.id.menu_sair -> finish()
+            R.id.menu_sair -> {
+                ApplicationCustom.getInstance().sessaoAtual = null;
+                finish();
+            }
         }
 
         return true

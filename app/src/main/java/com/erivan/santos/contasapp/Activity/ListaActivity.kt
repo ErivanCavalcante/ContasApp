@@ -1,11 +1,13 @@
 package com.erivan.santos.contasapp.Activity
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.erivan.santos.contasapp.MainActivity_
@@ -38,6 +40,7 @@ open class ListaActivity : TiActivity<ContaPresenter, ContaView>(), ContaView, S
 
         rvLista.adapter = adapter
 
+        //Mostra os detalhes
         adapter.onClickListener = { view, adapter, item, position ->
             var conta = lista.getAdapterItem(position)
 
@@ -46,6 +49,27 @@ open class ListaActivity : TiActivity<ContaPresenter, ContaView>(), ContaView, S
                                 .start();
 
             finish()
+
+            true
+        }
+
+        adapter.onLongClickListener = { view, adapter, item, position ->
+            var conta = lista.getAdapterItem(position)
+
+            AlertDialog.Builder(ListaActivity_@this)
+                .setTitle("Confirmar ação")
+                .setMessage("Deseja remover essa conta?")
+                .setPositiveButton("Sim", object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface?, p1: Int) {
+                        presenter.removerConta(conta)
+                        dialog?.dismiss()
+                    }
+                })
+                .setNegativeButton("Não", object : DialogInterface.OnClickListener {
+                    override fun onClick(dialog: DialogInterface?, p1: Int) {
+                        dialog?.dismiss()
+                    }
+                }).show()
 
             true
         }
@@ -61,6 +85,10 @@ open class ListaActivity : TiActivity<ContaPresenter, ContaView>(), ContaView, S
     }
 
     override fun adicionou() {
+
+    }
+
+    override fun removeu() {
 
     }
 

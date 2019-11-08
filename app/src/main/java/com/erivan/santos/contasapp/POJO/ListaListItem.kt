@@ -1,6 +1,7 @@
 package com.erivan.santos.contasapp.POJO
 
 import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.erivan.santos.contasapp.ApplicationCustom
@@ -30,9 +31,13 @@ open class ListaListItem(var tipo: TipoLista) : GenericItem() {
     class ListaListItemViewHolder(view: View) : GenericItemViewHolder(view) {
 
         var lista: RecyclerView
+        var txtNullState: TextView
 
         init {
             lista = view.findViewById(R.id.rv)
+            txtNullState = view.findViewById(R.id.txtNullState)
+
+            txtNullState.visibility = View.GONE
 
             lista.setHasFixedSize(true)
 
@@ -62,6 +67,14 @@ open class ListaListItem(var tipo: TipoLista) : GenericItem() {
 
             itemAdapter.add(listaFinal)
 
+            //Testa o estado s eh nulo ou tem algum item
+            if (lista.size > 0) {
+                txtNullState.visibility = View.GONE
+            }
+            else {
+                txtNullState.visibility = View.VISIBLE
+            }
+
             this.lista.adapter = fastAdapter
         }
 
@@ -73,7 +86,7 @@ open class ListaListItem(var tipo: TipoLista) : GenericItem() {
             val dao = ContaDao()
             lateinit var lista: List<Conta>;
 
-            if (tipo == TipoLista.MES_ATUAL) {
+            if (tipo == TipoLista.MES_ATUAL) { //Pega todas as contas do mes pagas e nao pagas
                 lista = dao.pesquisarPorMes(ApplicationCustom.getInstance().sessaoAtual);
             }
             else if (tipo == TipoLista.PROXIMAS_VENCER) {

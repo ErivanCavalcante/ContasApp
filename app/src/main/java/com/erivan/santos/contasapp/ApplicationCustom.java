@@ -1,6 +1,7 @@
 package com.erivan.santos.contasapp;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 
 import com.erivan.santos.contasapp.POJO.Usuario;
 
@@ -33,5 +34,16 @@ public class ApplicationCustom extends Application {
 
     public void setSessaoAtual(Usuario usuario) {
         sessaoAtual = usuario;
+
+        SharedPreferences shared = getSharedPreferences("com.erivan.santos.contasapp.shared", MODE_PRIVATE);
+
+        if (usuario == null) {
+            shared.edit().putInt("user_id", 0)
+                        .apply();
+        }
+        else {
+            shared.edit().putInt("user_id", usuario.getId())
+                        .apply();
+        }
     }
 }
