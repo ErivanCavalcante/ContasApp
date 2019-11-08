@@ -9,8 +9,11 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.erivan.santos.contasapp.R
 import com.erivan.santos.contasapp.Repository.ContaDao
 import com.erivan.santos.contasapp.Repository.UserDao
+import kotlin.random.Random
+import kotlin.random.nextUInt
 
 class AvisarVencimentoWorker(appContext: Context, params: WorkerParameters) : Worker(appContext, params) {
     override fun doWork(): Result {
@@ -31,13 +34,26 @@ class AvisarVencimentoWorker(appContext: Context, params: WorkerParameters) : Wo
                 //Procura as contas q estao proximas de vencer
                 var contas = contaDao.pesquisarPorProximasVencer(usuario)
 
-                val nmn = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                if (contas?.size > 0) {
+                    val nmn = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-                //Loop em todas as contas para mostrar as notificacoes
-                for (conta in contas) {
+                    //Se for o android o entao cria o canal
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        criaCanalNotificacao(nmn,"CANAL_LEMBRETE_CONTA", "Lembrete pagamento", NotificationManager.IMPORTANCE_DEFAULT)
+                    }
+
+                    //Sorteia uma conta a vencer para ser mostrada no momento
+                    val random = Random(System.currentTimeMillis())
+                    var pos = random.nextInt(contas.size)
+
+                    if (pos < 0)
+                        pos = 0
+
+                    val contaAtual = contas[pos]
+
                     //So avisa se tiver a permissao
-                    if (conta.avisarVencimento)
-                        criaNotificacao(nmn, "Conta perto de vencer", "${conta.titulo} \nR$ ${conta.valor}")
+                    if (contaAtual.avisarVencimento)
+                        criaNotificacao(nmn, "Conta perto de vencer", "${contaAtual.titulo} (${contaAtual.descricao}) R$ ${contaAtual.valor}")
                 }
             }
         }
@@ -46,28 +62,18 @@ class AvisarVencimentoWorker(appContext: Context, params: WorkerParameters) : Wo
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    internal fun criaCanalNotificacao(id: String, nome: String, prioridade: Int) {
+    internal fun criaCanalNotificacao(nmn: NotificationManager?, id: String, nome: String, prioridade: Int) {
         val canal = NotificationChannel(id, nome, prioridade)
 
-        val nmn = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        nmn.createNotificationChannel(canal)
+        nmn!!.createNotificationChannel(canal)
     }
 
     internal fun criaNotificacao(nmn: NotificationManager?, titulo: String, texto: String) {
-        //Se for o android o entao cria o canal
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            criaCanalNotificacao(
-                "CANAL_ENVIO_NS",
-                "Envio NS",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-        }
-
         //Cria o builder da notificiacao
-        val notificacao = NotificationCompat.Builder(applicationContext, "CANAL_ENVIO_NS")
+        val notificacao = NotificationCompat.Builder(applicationContext, "CANAL_LEMBRETE_CONTA")
 
         notificacao
+            .setSmallIcon(R.drawable.ic_payment)
             .setContentTitle(titulo)
             .setContentText(texto)
             .setDefaults(Notification.DEFAULT_ALL)

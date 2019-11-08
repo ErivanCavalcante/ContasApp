@@ -61,7 +61,10 @@ open class ListaActivity : TiActivity<ContaPresenter, ContaView>(), ContaView, S
                 .setMessage("Deseja remover essa conta?")
                 .setPositiveButton("Sim", object : DialogInterface.OnClickListener {
                     override fun onClick(dialog: DialogInterface?, p1: Int) {
+                        //Remove td em seguida carrega a lista
                         presenter.removerConta(conta)
+                        presenter.carregarTodas()
+
                         dialog?.dismiss()
                     }
                 })

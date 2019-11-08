@@ -1,7 +1,9 @@
 package com.erivan.santos.contasapp.Activity
 
 import android.widget.Toast
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.OneTimeWorkRequest
+import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import com.erivan.santos.contasapp.ApplicationCustom_
 import com.erivan.santos.contasapp.MainActivity_
@@ -22,7 +24,7 @@ import java.util.concurrent.TimeUnit
 @EActivity(R.layout.activity_login)
 @Fullscreen
 open class LoginActivity : TiActivity<UsuarioPresenter, UsuarioView>(), UsuarioView, Validator.ValidationListener {
-
+    //Referencias as views
     @NotEmpty
     @Email
     @ViewById
@@ -35,6 +37,7 @@ open class LoginActivity : TiActivity<UsuarioPresenter, UsuarioView>(), UsuarioV
 
     lateinit var validator: Validator
 
+    //Funcao chamada assim q as views sao injetadas
     @AfterViews
     fun setupViews() {
         validator = Validator(this)
@@ -53,7 +56,7 @@ open class LoginActivity : TiActivity<UsuarioPresenter, UsuarioView>(), UsuarioV
     }
 
     override fun loginOk() {
-        //inicarServicoLembrete()
+        inicarServicoLembrete()
         MainActivity_.intent(this).start()
         finish()
     }
@@ -90,12 +93,13 @@ open class LoginActivity : TiActivity<UsuarioPresenter, UsuarioView>(), UsuarioV
 
     }
 
+    //Rotina q roda a cada 2 horas pra avisar ao usuario q tem contas perto de vencer
     private fun inicarServicoLembrete() {
-        val work = OneTimeWorkRequest.Builder(AvisarVencimentoWorker::class.java)
-                                    .setInitialDelay(1, TimeUnit.MINUTES)
+        val work = PeriodicWorkRequest.Builder(AvisarVencimentoWorker::class.java, 2, TimeUnit.HOURS)
+                                    .setInitialDelay(30, TimeUnit.MINUTES)
                                     .build()
 
         WorkManager.getInstance(ApplicationCustom_.getInstance())
-            .enqueue(work)
+            .enqueueUniquePeriodicWork("", ExistingPeriodicWorkPolicy.KEEP, work)
     }
 }

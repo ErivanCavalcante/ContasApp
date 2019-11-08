@@ -100,16 +100,11 @@ class ContaDao : BaseDaoImpl<Conta, Int>
 
     //Pesquisam todas q faltam ate 8 dias para vencer ou ja venceram
     fun pesquisarPorProximasVencer(usuario: Usuario) : List<Conta> {
-        var hoje = Date()
-        var f = SimpleDateFormat("yyyy-MM-dd")
-
-        var dataFormatada: String = f.format(hoje)
-
         //Pega as contas do mes atual
         var sql = "SELECT id, titulo, descricao, valor, dataVencimento, avisarVencimento, pago FROM contas " +
                 "WHERE usuario_id = ${usuario.id} AND " +
                 "pago = 0 " +
-                "AND '$dataFormatada' > date(dataVencimento, '-8 days') AND '$dataFormatada' < dataVencimento";
+                "AND date('now') > date(dataVencimento, '-8 days') AND date('now') < dataVencimento";
 
         var result : GenericRawResults<Conta>  = queryRaw(sql, object : RawRowMapper<Conta> {
             override fun mapRow(columnNames: Array<out String>?, resultColumns: Array<out String>?): Conta {
@@ -159,7 +154,7 @@ class ContaDao : BaseDaoImpl<Conta, Int>
         return queryBuilder().where()
             .eq("usuario_id", usuario.id)
             .and()
-            .eq("descricao", descricao)
+            .eq("titulo", descricao)
             .query()
     }
 }
