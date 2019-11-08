@@ -10,5 +10,5 @@ Aplicativo para sistema Android, desenvolvido em kotlin/java que auxilia no gere
 5. Thirtyinch (MVP)
 6. Fast Adapter
 7. Android Annotations
-9. Saripaar
-10. Work Manager
+8. Saripaar
+9. Work Manager
