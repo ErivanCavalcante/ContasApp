@@ -100,6 +100,6 @@ open class LoginActivity : TiActivity<UsuarioPresenter, UsuarioView>(), UsuarioV
                                     .build()
 
         WorkManager.getInstance(ApplicationCustom_.getInstance())
-            .enqueueUniquePeriodicWork("", ExistingPeriodicWorkPolicy.KEEP, work)
+            .enqueueUniquePeriodicWork("lembrete_conta", ExistingPeriodicWorkPolicy.KEEP, work)
     }
 }
